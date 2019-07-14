@@ -7,7 +7,7 @@
 //
 
 import Foundation
-class GPX {
+public class GPX {
     let version = "0.1"
     func info()->String{
         return "GPXLib \(version)"
