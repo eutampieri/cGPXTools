@@ -9,29 +9,29 @@
 import Foundation
 public class GPX {
     let version = "0.1"
-    func info()->String{
+    public func info()->String{
         return "GPXLib \(version)"
     }
-    enum Errors: Error{
+    public enum Errors: Error{
         case XmlParseFailed
         case InvalidGPXType
         case EleDataFailed
     }
-    enum ErrorCodes:Int32{
+    public enum ErrorCodes:Int32{
         case XmlParseFailed = 2
         case InvalidGPXType = 3
         case EleDataFailed = 4
     }
-    enum GPXType: Int {
+    public enum GPXType: Int {
         case wpt = 0
         case trk = 1
         case none = -1
     }
     var gpxTree:XMLDocument
-    init(){
+    public init(){
         gpxTree=XMLDocument()
     }
-    init(gpx: String) throws{
+    public init(gpx: String) throws{
         do{
             try gpxTree=XMLDocument(xmlString: gpx)
         }
@@ -39,7 +39,7 @@ public class GPX {
             throw Errors.XmlParseFailed
         }
     }
-    func type()->GPXType{
+    public func type()->GPXType{
         let wptLen = gpxTree.rootElement()?.elements(forName: "wpt").count
         let trkLen = gpxTree.rootElement()?.elements(forName: "trk").count
         if wptLen!>0{
@@ -50,10 +50,10 @@ public class GPX {
         }
         return GPXType.none
     }
-    func dump()->XMLDocument{
+    public func dump()->XMLDocument{
         return gpxTree
     }
-    func reverse() throws ->XMLDocument{
+    public func reverse() throws ->XMLDocument{
         var newGPX:XMLDocument
         do{
             newGPX=try XMLDocument(xmlString: gpxTree.xmlString)
@@ -113,7 +113,7 @@ public class GPX {
         }
         return newGPX
     }
-    func flatten() throws ->XMLDocument{
+    public func flatten() throws ->XMLDocument{
         var newGPX:XMLDocument
         do{
             newGPX=try XMLDocument(xmlString: gpxTree.xmlString)
@@ -171,7 +171,7 @@ public class GPX {
         }
         return newGPX
     }
-    func combine(others: [GPX]) throws -> XMLDocument{
+    public func combine(others: [GPX]) throws -> XMLDocument{
         var newGPX:XMLDocument
         do{
             newGPX=try XMLDocument(xmlString: flatten().xmlString)
@@ -212,7 +212,7 @@ public class GPX {
         }
         return newGPX
     }
-    func splice(lat:Double, lon:Double, backwards:Bool=false)throws ->XMLDocument{
+    public func splice(lat:Double, lon:Double, backwards:Bool=false)throws ->XMLDocument{
         var newGPX:XMLDocument
         var distanze:[Int:Double] = [:]
         do{
@@ -250,7 +250,7 @@ public class GPX {
         return newGPX
     }
 
-    func getAltitude(BingAPIKey: String = "")throws ->XMLDocument{
+    public func getAltitude(BingAPIKey: String = "")throws ->XMLDocument{
         func getPointElevation(lat: Double, lon: Double, BingApiKey: String)->Int{
             var url:URL
             let decoder = JSONDecoder()
@@ -327,7 +327,7 @@ public class GPX {
         }
         return newGPX
     }
-    func getEleList()throws ->[String:[Double]]{
+    public func getEleList()throws ->[String:[Double]]{
         func deg2rad(_ alpha: Double)->Double{
             return alpha/180.0*Double.pi;
         }
